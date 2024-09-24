@@ -1,7 +1,6 @@
-export interface products {
+export interface Products {
   name: string;
   price: number;
   image: string;
   amountInStock: string;
-  categoryId: number;
 }
