@@ -2,7 +2,7 @@ import { MongoClient, Db, Collection, WithId } from "mongodb";
 
 import { Products } from "../models/produtcts.js";
 
-const con: string | undefined = process.env.CONECTION_STRING;
+const con: string | undefined = process.env.CONNECTION_STRING;
 
 async function getAllProducts() {
   if (!con) {

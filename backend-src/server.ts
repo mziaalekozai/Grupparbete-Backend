@@ -1,5 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import { router as productsRouter } from "./routes/products.js";
+import { router as usersRouter } from "./routes/users.js";
 
 const app: Express = express();
 const port = 3333;
@@ -10,6 +11,8 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use("/products", productsRouter);
+
+app.use("/users", usersRouter);
 
 app.listen(port, () => {
   console.log("Server is listening on port " + port);
