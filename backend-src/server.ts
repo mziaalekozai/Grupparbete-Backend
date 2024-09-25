@@ -1,9 +1,10 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import { router as productsRouter } from "./routes/products.js";
 import { router as usersRouter } from "./routes/users.js";
-import { router as cartRouter } from "./routes/carts.js"
+import { router as cartRouter } from "./routes/carts.js";
 
 const app: Express = express();
+app.use(express.json());
 const port = 3333;
 
 app.use("/", (req: Request, res: Response, next: NextFunction) => {
@@ -12,9 +13,7 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use("/products", productsRouter);
-
 app.use("/users", usersRouter);
-
 app.use("/cart", cartRouter);
 
 app.listen(port, () => {
