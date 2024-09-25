@@ -1,19 +1,21 @@
-import { MongoClient, Db, Collection, WithId } from "mongodb";
-
+import { MongoClient, Db, Collection } from "mongodb";
 import { Products } from "../models/produtcts.js";
 
 const con: string | undefined = process.env.CONNECTION_STRING;
 
-async function getAllProducts() {
-  if (!con) {
-    console.log("No connection string, check your .env file!");
-    throw new Error("No connection string");
-  }
-  const client: MongoClient = await MongoClient.connect(con);
-  const db: Db = await client.db("webShop");
-  const col: Collection<Products> = db.collection<Products>("products");
-  const result: WithId<Products>[] = await col.find({}).toArray();
-  return result;
+if (!con) {
+  console.log("No connection string, check your .env file!");
+  throw new Error("No connection string");
 }
 
-export { getAllProducts };
+async function connectToDatabase(): Promise<Db> {
+  const client: MongoClient = await MongoClient.connect(con as string);
+  return client.db("webShop");
+}
+
+async function getProductsCollection(): Promise<Collection<Products>> {
+  const db = await connectToDatabase();
+  return db.collection<Products>("products");
+}
+
+export { getProductsCollection };
