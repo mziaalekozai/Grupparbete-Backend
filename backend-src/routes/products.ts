@@ -2,8 +2,8 @@ import express, { Request, Response, Router } from "express";
 
 import { Products } from "../models/produtcts.js";
 import { ObjectId, WithId } from "mongodb";
-import { getAllProducts } from "../database/getAllProducts.js";
-import { getOneProduct } from "../database/getOneProduct.js";
+import { getAllProducts } from "../database/products/getAllProducts.js";
+import { getOneProduct } from "../database/products/getOneProduct.js";
 
 export const router: Router = express.Router();
 

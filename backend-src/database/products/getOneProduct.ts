@@ -1,5 +1,5 @@
 import { getProductsCollection } from "./products.js";
-import { Products } from "../models/produtcts.js";
+import { Products } from "../../models/produtcts.js";
 import { WithId, ObjectId } from "mongodb";
 
 async function getOneProduct(id: ObjectId): Promise<WithId<Products> | null> {
