@@ -5,6 +5,8 @@ import { getAllUsers } from "../database/user/getAllUsers.js";
 import { getOneUser } from "../database/user/getOneUser.js";
 import { updateUser } from "../database/user/updateUser.js";
 import { deletUser } from "../database/user/deleteUser.js";
+import { addUser } from "../database/user/addUser.js";
+import { searchUser } from "../database/user/searchUser.js";
 
 export const router: Router = express.Router();
 
@@ -12,6 +14,35 @@ router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
   const allUsers: WithId<Users>[] = await getAllUsers();
   res.send(allUsers);
 });
+
+router.get("/search", async (req: Request, res: Response) => {
+  try {
+    const name: string = req.query.q as string;
+    console.log("Searching for user with name:", name);
+    const search = await searchUser(name);
+    console.log("Search result:", search);
+
+    if (search.length > 0) {
+      res.status(200).json(search);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error: any) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.post("/", async (req: Request, res: Response) => {
+  const newUser: Users = req.body;
+  const insertUser = await addUser(newUser);
+  if (insertUser == null) {
+    res.status(400).json({ message: "Failed to create a new user" });
+    return;
+  }
+  res.status(201).json(newUser);
+});
+
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const id = new ObjectId(req.params.id);
