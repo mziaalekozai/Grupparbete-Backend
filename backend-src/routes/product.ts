@@ -6,6 +6,7 @@ import { getOneProduct } from "../database/product/getOneProduct.js";
 import { updateProduct } from "../database/product/updateProduct.js";
 import { deletProduct } from "../database/product/deleteProduct.js";
 import { searchProduct } from "../database/product/searchProduct.js";
+import { addProduct } from "../database/product/addProducts.js";
 
 export const router: Router = express.Router();
 
@@ -30,6 +31,16 @@ router.get("/search", async (req: Request, res: Response) => {
     console.error("Error fetching product:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+// POST a new product
+router.post("/", async (req: Request, res: Response) => {
+  const newProduct: Products = req.body;
+  const insertProduct = await addProduct(newProduct);
+  if (insertProduct == null) {
+    res.status(400).json({ message: "Failed to create product" });
+    return;
+  }
+  res.status(201).json(newProduct);
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
