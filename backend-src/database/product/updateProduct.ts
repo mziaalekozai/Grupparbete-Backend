@@ -1,11 +1,14 @@
+import { Products } from "../../models/produtct.js";
 import { getProductsCollection } from "./products.js";
 import { ObjectId, UpdateResult } from "mongodb";
 
-async function updatedProduct(id: ObjectId, body: Object) {
+async function updateProduct(id: ObjectId, body: Object) {
   const col = await getProductsCollection();
   const filter = { _id: id };
   //   const update = { $set: body };
-  const result: UpdateResult = await col.updateOne(filter, { $set: body });
+  const result: UpdateResult<Products> = await col.updateOne(filter, {
+    $set: body,
+  });
 
   if (!result.acknowledged) {
     console.log("Could not update the product.");
@@ -16,4 +19,4 @@ async function updatedProduct(id: ObjectId, body: Object) {
   return result;
 }
 
-export { updatedProduct };
+export { updateProduct };

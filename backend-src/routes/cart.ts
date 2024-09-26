@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import { Carts } from "../models/cart.js";
 import { WithId } from "mongodb";
-import { getAllInCart } from "../database/carts/cart.js";
+import { getAllInCart } from "../database/cart/cart.js";
 
 export const router: Router = express.Router();
 

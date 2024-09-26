@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from "mongodb";
-import { Products } from "../../models/produtcts.js";
+import { Users } from "../../models/user.js";
 
 const con: string | undefined = process.env.CONNECTION_STRING;
 
@@ -13,9 +13,9 @@ async function connectToDatabase(): Promise<Db> {
   return client.db("webShop");
 }
 
-async function getProductsCollection(): Promise<Collection<Products>> {
+async function getUsersCollection(): Promise<Collection<Users>> {
   const db = await connectToDatabase();
-  return db.collection<Products>("products");
+  return db.collection<Users>("users");
 }
 
-export { getProductsCollection };
+export { getUsersCollection };

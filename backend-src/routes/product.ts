@@ -1,11 +1,10 @@
 import express, { Request, Response, Router } from "express";
-
-import { Products } from "../models/produtcts.js";
+import { Products } from "../models/produtct.js";
 import { ObjectId, WithId } from "mongodb";
-import { getAllProducts } from "../database/products/getAllProducts.js";
-import { getOneProduct } from "../database/products/getOneProduct.js";
-import { updatedProduct } from "../database/products/updatedProduct.js";
-import { deletProducts } from "../database/products/deleteProduct.js";
+import { getAllProducts } from "../database/product/getAllProducts.js";
+import { getOneProduct } from "../database/product/getOneProduct.js";
+import { updateProduct } from "../database/product/updateProduct.js";
+import { deletProducts } from "../database/product/deleteProduct.js";
 
 export const router: Router = express.Router();
 
@@ -37,7 +36,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     return res.status(400).send({ message: "Invalid product ID" });
   }
   const updatedFields = req.body;
-  await updatedProduct(objectId, updatedFields);
+  await updateProduct(objectId, updatedFields);
   res.sendStatus(201);
 });
 
