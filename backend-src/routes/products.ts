@@ -4,9 +4,10 @@ import { Products } from "../models/produtcts.js";
 import { ObjectId, WithId } from "mongodb";
 import { getAllProducts } from "../database/products/getAllProducts.js";
 import { getOneProduct } from "../database/products/getOneProduct.js";
+// import { addProduct } from "../database/products/addProducts.js";
+import { getProductsCollection } from "../database/products/products.js";
 
 export const router: Router = express.Router();
-
 router.get("/", async (req: Request, res: Response<WithId<Products>[]>) => {
   const allProducts: WithId<Products>[] = await getAllProducts();
   res.send(allProducts);

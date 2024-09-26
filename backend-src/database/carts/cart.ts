@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, WithId } from "mongodb";
-import { Carts } from "../models/cart.js";
+import { Carts } from "../../models/cart.js";
 
 const con: string | undefined = process.env.CONNECTION_STRING;
 
