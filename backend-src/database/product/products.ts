@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from "mongodb";
-import { Products } from "../../models/produtcts.js";
+import { Products } from "../../models/produtct.js";
 
 const con: string | undefined = process.env.CONNECTION_STRING;
 
