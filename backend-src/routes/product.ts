@@ -6,7 +6,7 @@ import { getOneProduct } from "../database/product/getOneProduct.js";
 import { updateProduct } from "../database/product/updateProduct.js";
 import { deletProduct } from "../database/product/deleteProduct.js";
 import { searchProduct } from "../database/product/searchProduct.js";
-
+import { addProduct } from "../database/product/addProducts.js";
 export const router: Router = express.Router();
 
 router.get("/", async (req: Request, res: Response<WithId<Products>[]>) => {
@@ -64,4 +64,15 @@ router.delete("/:id", async (req: Request, res: Response) => {
   const objectId = new ObjectId(id);
   await deletProduct(objectId);
   res.sendStatus(204);
+});
+
+// POST a new product
+router.post("/", async (req: Request, res: Response) => {
+  const newProduct: Products = req.body;
+  const insertProduct = await addProduct(newProduct);
+  if (insertProduct == null) {
+    res.status(400).json({ message: "Failed to create product" });
+    return;
+  }
+  res.status(201).json(newProduct);
 });
