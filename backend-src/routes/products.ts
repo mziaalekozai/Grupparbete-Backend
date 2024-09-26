@@ -5,6 +5,7 @@ import { ObjectId, WithId } from "mongodb";
 import { getAllProducts } from "../database/products/getAllProducts.js";
 import { getOneProduct } from "../database/products/getOneProduct.js";
 import { updatedProduct } from "../database/products/updatedProduct.js";
+import { deletProducts } from "../database/products/deleteProduct.js";
 
 export const router: Router = express.Router();
 
@@ -38,4 +39,11 @@ router.put("/:id", async (req: Request, res: Response) => {
   const updatedFields = req.body;
   await updatedProduct(objectId, updatedFields);
   res.sendStatus(201);
+});
+
+router.delete("/:id", async (req: Request, res: Response) => {
+  const id: string = req.params.id;
+  const objectId = new ObjectId(id);
+  await deletProducts(objectId);
+  res.sendStatus(204);
 });
