@@ -1,7 +1,7 @@
 import { getProductsCollection } from "./products.js";
 import { DeleteResult, ObjectId } from "mongodb";
 
-async function deletProducts(id: ObjectId) {
+async function deletProduct(id: ObjectId) {
   const col = await getProductsCollection();
   const filter = { _id: id };
   const result: DeleteResult = await col.deleteOne(filter);
@@ -11,7 +11,7 @@ async function deletProducts(id: ObjectId) {
   }
   console.log(`Deleted ${result.deletedCount} product(s).`);
 }
-export { deletProducts };
+export { deletProduct };
 
 // det är denna jag har deletat, så vi får lägga till den igen när Add finns :)
 // {"name": "Byggklossar", "price": 199, "image":"https://cdn1.leksakscity.se/35071-home_default/byggklossar-tra-200-delar-woodi-world-toy.jpg", "amountInStock": 56}

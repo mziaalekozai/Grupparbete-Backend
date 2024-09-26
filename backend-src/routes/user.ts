@@ -4,6 +4,7 @@ import { WithId, ObjectId } from "mongodb";
 import { getAllUsers } from "../database/user/getAllUsers.js";
 import { getOneUser } from "../database/user/getOneUser.js";
 import { updateUser } from "../database/user/updateUser.js";
+import { deletUser } from "../database/user/deleteUser.js";
 
 export const router: Router = express.Router();
 
@@ -35,4 +36,11 @@ router.put("/:id", async (req: Request, res: Response) => {
   const updatedFields = req.body;
   await updateUser(objectId, updatedFields);
   res.sendStatus(201);
+});
+
+router.delete("/:id", async (req: Request, res: Response) => {
+  const id: string = req.params.id;
+  const objectId = new ObjectId(id);
+  await deletUser(objectId);
+  res.sendStatus(204);
 });

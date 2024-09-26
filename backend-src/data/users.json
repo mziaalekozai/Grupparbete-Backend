@@ -1,0 +1,5 @@
+[
+  { "name": "Zia", "isAdmin": true },
+  { "name": "Linda", "isAdmin": false },
+  { "name": "Josefin", "isAdmin": true }
+]
