@@ -4,7 +4,7 @@ import { ObjectId, WithId } from "mongodb";
 import { getAllProducts } from "../database/product/getAllProducts.js";
 import { getOneProduct } from "../database/product/getOneProduct.js";
 import { updateProduct } from "../database/product/updateProduct.js";
-import { deletProduct } from "../database/product/deleteProduct.js";
+import { deleteProduct } from "../database/product/deleteProduct.js";
 import { searchProduct } from "../database/product/searchProduct.js";
 import { addProduct } from "../database/product/addProducts.js";
 export const router: Router = express.Router();
@@ -74,7 +74,7 @@ router.put("/:id", async (req: Request, res: Response) => {
 router.delete("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const objectId = new ObjectId(id);
-  await deletProduct(objectId);
+  await deleteProduct(objectId);
   res.sendStatus(204);
 });
 
