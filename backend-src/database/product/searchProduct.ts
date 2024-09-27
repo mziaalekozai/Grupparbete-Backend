@@ -1,18 +1,22 @@
 import { getProductsCollection } from "./products.js";
 import { Products } from "../../models/produtct.js";
-import { FindCursor, WithId } from "mongodb";
+import { WithId } from "mongodb";
 
 async function searchProduct(search: string): Promise<WithId<Products>[]> {
   const col = await getProductsCollection();
-  const filter = { name: { $regex: new RegExp(search, "i") } };
-
-  const crusor: FindCursor<WithId<Products>> = col.find(filter);
-  const found: WithId<Products>[] = await crusor.toArray();
-  if (found.length > 0) {
-    console.log("Found product: ", found);
-    return found;
+  const searchterm = search
+    .split(" ")
+    .map((term) => term.trim())
+    .filter((term) => term.length > 0);
+  const productSearch = searchterm.map((term) => ({
+    name: { $regex: new RegExp(term, "i") },
+  }));
+  const product = await col.find({ $or: productSearch }).toArray();
+  if (product.length > 0) {
+    console.log("Found product: ", product);
+    return product;
   } else {
-    console.log("All products is gone...");
+    console.log("No products product...");
     return [];
   }
 }

@@ -14,23 +14,25 @@ router.get("/", async (req: Request, res: Response<WithId<Products>[]>) => {
   res.send(allProducts);
 });
 
-router.get("/search", async (req: Request, res: Response) => {
-  try {
-    const name: string = req.query.q as string;
-    console.log("Searching for product with name:", name);
-    const search = await searchProduct(name);
-    console.log("Search result:", search);
+router.get("/search", async (req, res) => {
+  const name: string = req.query.q as string;
+  if (!name.trim()) {
+    return res.status(400).json({ message: "Search query cannot be empty" });
+  }
 
-    if (search.length > 0) {
-      res.status(200).json(search);
+  try {
+    const searchResults = await searchProduct(name);
+    if (searchResults.length > 0) {
+      res.status(200).json(searchResults);
     } else {
       res.status(404).json({ message: "Product not found" });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching product:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 // POST a new product
 router.post("/", async (req: Request, res: Response) => {
   const newProduct: Products = req.body;
