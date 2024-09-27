@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { Products } from "../models/produtct.js";
+import { Products } from "../models/product.js";
 import { ObjectId, WithId } from "mongodb";
 import { getAllProducts } from "../database/product/getAllProducts.js";
 import { getOneProduct } from "../database/product/getOneProduct.js";

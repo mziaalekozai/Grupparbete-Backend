@@ -1,5 +1,5 @@
 import { getProductsCollection } from "./products.js";
-import { Products } from "../../models/produtct.js";
+import { Products } from "../../models/product.js";
 import { WithId } from "mongodb";
 
 async function searchProduct(search: string): Promise<WithId<Products>[]> {
@@ -16,7 +16,7 @@ async function searchProduct(search: string): Promise<WithId<Products>[]> {
     console.log("Found product: ", product);
     return product;
   } else {
-    console.log("No products product...");
+    console.log("No products found...");
     return [];
   }
 }

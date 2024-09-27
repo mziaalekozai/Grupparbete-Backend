@@ -3,18 +3,22 @@ import { getUsersCollection } from "./user.js";
 import { FindCursor, WithId } from "mongodb";
 
 async function searchUser(search: string): Promise<WithId<Users>[]> {
-  const col = await getUsersCollection();
-  const filter = { name: { $regex: new RegExp(search, "i") } };
-
-  const crusor: FindCursor<WithId<Users>> = col.find(filter);
-  const found: WithId<Users>[] = await crusor.toArray();
-  if (found.length > 0) {
-    console.log("Found User: ", found);
-    return found;
-  } else {
-    console.log("All user is gone...");
-    return [];
+	const col = await getUsersCollection();
+	const searchterm = search
+	  .split(" ")
+	  .map((term) => term.trim())
+	  .filter((term) => term.length > 0);
+	const userSearch = searchterm.map((term) => ({
+	  name: { $regex: new RegExp(term, "i") },
+	}));
+	const user = await col.find({ $or: userSearch }).toArray();
+	if (user.length > 0) {
+	  console.log("Found user: ", user);
+	  return user;
+	} else {
+	  console.log("No users found...");
+	  return [];
+	}
   }
-}
-
-export { searchUser };
+  
+  export { searchUser };

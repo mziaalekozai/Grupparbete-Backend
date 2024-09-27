@@ -15,23 +15,24 @@ router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
   res.send(allUsers);
 });
 
-router.get("/search", async (req: Request, res: Response) => {
-  try {
-    const name: string = req.query.q as string;
-    console.log("Searching for user with name:", name);
-    const search = await searchUser(name);
-    console.log("Search result:", search);
-
-    if (search.length > 0) {
-      res.status(200).json(search);
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  } catch (error: any) {
-    console.error("Error fetching product:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
+router.get("/search", async (req, res) => {
+	const name: string = req.query.q as string;
+	if (!name.trim()) {
+	  return res.status(400).json({ message: "Search query cannot be empty" });
+	}
+  
+	try {
+	  const searchResults = await searchUser(name);
+	  if (searchResults.length > 0) {
+		res.status(200).json(searchResults);
+	  } else {
+		res.status(404).json({ message: "User not found" });
+	  }
+	} catch (error) {
+	  console.error("Error fetching user:", error);
+	  res.status(500).json({ message: "Internal Server Error" });
+	}
+  });
 
 router.post("/", async (req: Request, res: Response) => {
   const newUser: Users = req.body;

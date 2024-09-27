@@ -1,4 +1,4 @@
-import { Products } from "../../models/produtct.js";
+import { Products } from "../../models/product.js";
 import { getProductsCollection } from "./products.js";
 import { ObjectId, UpdateResult } from "mongodb";
 
