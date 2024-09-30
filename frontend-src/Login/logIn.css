@@ -1,0 +1,11 @@
+/* I din style.css */
+.product-section {
+  display: none;
+}
+.error {
+  display: none;
+}
+
+.logIn-section {
+  display: block;
+}
