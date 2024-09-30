@@ -1,0 +1,19 @@
+/* I din style.css */
+.product-section {
+  display: none;
+}
+.error {
+  display: none;
+}
+
+.logIn-section {
+  display: block;
+}
+
+.usersList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
