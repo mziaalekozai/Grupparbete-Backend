@@ -36,9 +36,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 const logOut = document.querySelector(".logOut-btn");
 logOut.addEventListener("click", () => {
   logInSection.style.display = "block";
   productSection.style.display = "none";
   error.style.display = "none";
+});
+
+// Show all users
+const ShowUser = document.querySelector(".showUsers-btn");
+
+const UserList = document.querySelector(".usersList");
+
+ShowUser.addEventListener("click", async () => {
+  const response = await fetch("/user", {
+    method: "GET",
+  });
+  const data = await response.json();
+  console.log("Svar från servern: ", data);
+
+  data.forEach((users) => {
+    const li = document.createElement("li");
+    const button = document.createElement("button");
+    button.innerText = "Delete";
+    li.innerText = `${users.name}`;
+    UserList.append(li);
+    UserList.append(button);
+  });
 });

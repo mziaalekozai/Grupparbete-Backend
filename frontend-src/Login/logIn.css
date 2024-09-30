@@ -9,3 +9,11 @@
 .logIn-section {
   display: block;
 }
+
+.usersList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
