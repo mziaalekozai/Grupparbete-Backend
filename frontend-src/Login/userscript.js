@@ -58,25 +58,10 @@ ShowUser.addEventListener("click", async () => {
 
   data.forEach((users) => {
     const li = document.createElement("li");
-    const deleteButton = document.createElement("button");
+    const button = document.createElement("button");
     button.innerText = "Delete";
-    deleteButton.classList.add("delete-btn");
-
     li.innerText = `${users.name}`;
     UserList.append(li);
     UserList.append(button);
-    deleteButton.addEventListener("click", async () => {
-      const userId = UserList.getAttribute("data-id");
-      const response = await fetch(`/user/${userId}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        console.log("Användare raderad!");
-        UserList.remove();
-      } else {
-        const data = await response.json();
-        console.error("Fel vid radering: ", data);
-      }
-    });
   });
 });
