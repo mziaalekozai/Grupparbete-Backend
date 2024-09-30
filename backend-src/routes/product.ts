@@ -73,14 +73,24 @@ router.put("/:id", async (req: Request, res: Response) => {
 
 router.delete("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  const objectId = new ObjectId(id);
-  await deleteProduct(objectId);
-  res.sendStatus(204);
+
+  try {
+    const objectId = new ObjectId(id);
+    await deleteProduct(objectId);
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("Fel vid radering:", error);
+    res.status(500).json({ error: "Ett fel uppstod vid radering" });
+  }
 });
 
 // POST a new product
 router.post("/", async (req: Request, res: Response) => {
   const newProduct: Products = req.body;
+  if (!newProduct.name || !newProduct.price || !newProduct.image) {
+    res.status(400).json({ message: "Alla fält är obligatoriska" });
+    return;
+  }
   const insertProduct = await addProduct(newProduct);
   if (insertProduct == null) {
     res.status(400).json({ message: "Failed to create product" });
