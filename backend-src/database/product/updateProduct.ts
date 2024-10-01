@@ -15,7 +15,7 @@ async function updateProduct(id: ObjectId, body: Object) {
     return null;
   }
 
-  console.log(`Updated ${result.matchedCount} product(s).`);
+  console.log(`Updated ${result.modifiedCount} product(s).`);
   return result;
 }
 
