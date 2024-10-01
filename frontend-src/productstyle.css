@@ -2,6 +2,8 @@ body {
   box-sizing: 0;
   margin: 0em;
   background-color: rgb(121, 173, 121);
+  display: grid;
+  place-items: center;
 }
 
 .product-section {
@@ -50,4 +52,9 @@ input {
   margin-bottom: 0.5em;
 }
 label {
+}
+
+.button-div {
+  display: flex;
+  gap: 1em;
 }
