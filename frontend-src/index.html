@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="productstyle.css" />
     <link rel="stylesheet" href="./Users/logIn.css" />
     <script type="module" src="/Users/userscript.js"></script>
-    <script type="module" src="productscript.js"></script>
-</head>
-    <link rel="stylesheet" href="./Login/logIn.css" />
-    <script type="module" src="/Login/userscript.js"></script>
     <script type="module" src="./product/productscript.js"></script>
     <script type="module" src="./product/createProductElement.js"></script>
     <script type="module" src="./product/addProduct.js"></script>
@@ -26,16 +22,18 @@
         <button type="submit" class="Login-btn">Logga in</button>
       </form>
       <p class="error">Ogiltigt användarnamn</p>
-      <div>
+      <div class="add-show-btn">
+        <button class="addUser-btn">Lägg till Användare</button>
         <button class="showUsers-btn">Visa alla Användar</button>
         <ul class="usersList"></ul>
       </div>
     </section>
     <section class="product-section">
-      <button class="logOut-btn">logga ut</button>
-      <button id="get-products">Leksaker</button>
-
-      <button class="add-toy-btn">Lägg till leksak</button>
+      <div class="button-div">
+        <button class="logOut-btn">logga ut</button>
+        <button id="get-products">Leksaker</button>
+        <button class="add-toy-btn">Lägg till leksak</button>
+      </div>
       <ul class="product-list"></ul>
     </section>
   </body>

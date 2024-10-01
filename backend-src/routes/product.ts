@@ -14,7 +14,6 @@ router.get("/", async (req: Request, res: Response) => {
   const allProducts: WithId<Products>[] = await getAllProducts();
   res.send(allProducts);
   //   try {
-
   //     const allProducts: WithId<Products>[] = await getAllProducts();
   //     if (allProducts.length === 0) {
   //       return res.status(404).json({ message: "Inga produkter hittades" });

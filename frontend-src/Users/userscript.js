@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (userFound) {
         logInSection.style.display = "none";
-        productSection.style.display = "block";
+        productSection.style.display = "grid";
       } else {
         error.style.display = "block";
       }
