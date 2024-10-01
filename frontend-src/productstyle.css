@@ -53,3 +53,8 @@ input {
 }
 label {
 }
+
+.button-div {
+  display: flex;
+  gap: 1em;
+}
