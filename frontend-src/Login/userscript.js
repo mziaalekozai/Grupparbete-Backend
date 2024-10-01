@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Login successful", userFound);
 
         logInSection.style.display = "none";
-        productSection.style.display = "block";
+        productSection.style.display = "grid";
       } else {
         error.style.display = "block";
 

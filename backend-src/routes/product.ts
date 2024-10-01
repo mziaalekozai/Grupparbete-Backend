@@ -7,11 +7,21 @@ import { updateProduct } from "../database/product/updateProduct.js";
 import { deleteProduct } from "../database/product/deleteProduct.js";
 import { searchProduct } from "../database/product/searchProduct.js";
 import { addProduct } from "../database/product/addProducts.js";
+import { isValidProduct, productSchema } from "../data/validation.js";
 export const router: Router = express.Router();
 
-router.get("/", async (req: Request, res: Response<WithId<Products>[]>) => {
-  const allProducts: WithId<Products>[] = await getAllProducts();
-  res.send(allProducts);
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    const allProducts: WithId<Products>[] = await getAllProducts();
+
+    if (allProducts.length === 0) {
+      return res.status(404).json({ message: "Inga produkter hittades" });
+    }
+    res.status(200).json(allProducts);
+  } catch (error) {
+    console.error("Fel vid hämtning av produkter:", error);
+    res.status(500).json({ message: "Ett serverfel uppstod" });
+  }
 });
 
 router.get("/search", async (req, res) => {
@@ -33,22 +43,13 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// POST a new product
-router.post("/", async (req: Request, res: Response) => {
-  const newProduct: Products = req.body;
-  const insertProduct = await addProduct(newProduct);
-  if (insertProduct == null) {
-    res.status(400).json({ message: "Failed to create product" });
-    return;
-  }
-  res.status(201).json(newProduct);
-});
-
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const product = await getOneProduct(id);
-
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.sendStatus(400);
+    }
+    const product = await getOneProduct(new ObjectId(id));
     if (product) {
       res.status(200).json(product);
     } else {
@@ -63,12 +64,18 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.put("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const objectId = new ObjectId(id);
-  if (!ObjectId.isValid(id)) {
-    return res.status(400).send({ message: "Invalid product ID" });
+  const { error } = productSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
   }
-  const updatedFields = req.body;
-  await updateProduct(objectId, updatedFields);
-  res.sendStatus(201);
+
+  try {
+    const updatedFields = req.body;
+    await updateProduct(objectId, updatedFields);
+    res.sendStatus(201);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating product" });
+  }
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
@@ -86,15 +93,22 @@ router.delete("/:id", async (req: Request, res: Response) => {
 
 // POST a new product
 router.post("/", async (req: Request, res: Response) => {
-  const newProduct: Products = req.body;
-  if (!newProduct.name || !newProduct.price || !newProduct.image) {
-    res.status(400).json({ message: "Alla fält är obligatoriska" });
-    return;
+  try {
+    const newProduct: Products = req.body;
+    if (!isValidProduct(newProduct)) {
+      return res
+        .status(400)
+        .json({ message: "Failed to create product. Invalid data." });
+    }
+    const insertProduct = await addProduct(newProduct);
+    if (!insertProduct) {
+      return res
+        .status(500)
+        .json({ message: "Failed to add the product to the database." });
+    }
+    res.status(201).json({ insertedId: insertProduct });
+  } catch (error) {
+    console.error("Error adding product:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-  const insertProduct = await addProduct(newProduct);
-  if (insertProduct == null) {
-    res.status(400).json({ message: "Failed to create product" });
-    return;
-  }
-  res.status(201).json(newProduct);
 });

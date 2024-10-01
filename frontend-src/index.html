@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webshop</title>
@@ -9,33 +8,30 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./Login/logIn.css" />
     <script type="module" src="/Login/userscript.js"></script>
-    <script type="module" src="productscript.js"></script>
-</head>
+    <script type="module" src="./product/productscript.js"></script>
+    <script type="module" src="./product/createProductElement.js"></script>
+    <script type="module" src="./product/addProduct.js"></script>
+  </head>
 
-<body>
+  <body>
     <h1>Välkomen till Leksaker Webshop</h1>
     <section class="logIn-section">
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Användarnamn">
-            <button type="submit" class="Login-btn">Logga in</button>
-        </form>
-        <p class="error">Ogiltigt användarnamn</p>
-        <div>
-            <button class="showUsers-btn">Visa alla Användar</button>
-            <ul class="usersList"></ul>
-        </div>
-
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="Användarnamn" />
+        <button type="submit" class="Login-btn">Logga in</button>
+      </form>
+      <p class="error">Ogiltigt användarnamn</p>
+      <div>
+        <button class="showUsers-btn">Visa alla Användar</button>
+        <ul class="usersList"></ul>
+      </div>
     </section>
     <section class="product-section">
-        <button class="logOut-btn">logga ut</button>
-        <button id="get-products">Leksaker</button>
-        <button class="add-toy-btn">Lägg till leksak</button>
-        <ul class="product-list"></ul>
-        <section class="product-section ">
-            <button class="logOut-btn">logga ut</button>
-            <button id="get-products">Leksaker</button>
-            <ul class="product-list"></ul>
-        </section>
-</body>
+      <button class="logOut-btn">logga ut</button>
+      <button id="get-products">Leksaker</button>
 
+      <button class="add-toy-btn">Lägg till leksak</button>
+      <ul class="product-list"></ul>
+    </section>
+  </body>
 </html>
