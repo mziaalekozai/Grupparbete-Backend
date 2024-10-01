@@ -104,9 +104,10 @@ addButton.addEventListener("click", async () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Leksak tillagd: ", data);
-        createProductElement(data, ul);
-
+        const newProduct = await fetch(`/product/${data.insertedId}`);
+        const productData = await newProduct.json();
+        console.log("Leksak tillagd: ", productData);
+        createProductElement(productData, ul);
         form.remove();
         addToyButton.disabled = true;
       } else {
