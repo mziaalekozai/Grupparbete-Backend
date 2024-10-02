@@ -3,49 +3,34 @@ import { Carts } from "../models/cart.js";
 import { Products } from "../models/product.js";
 import { Users } from "../models/user.js";
 
-export const cartSchema = Joi.defaults((schema) => {
-  return schema.required();
-})
-  .object({
-    _id: Joi.string().min(24),
-    userId: Joi.string().min(24),
-    productId: Joi.string().min(24),
-    amount: Joi.number().min(1).required(),
-  })
-  .unknown(false);
+export const cartSchema = Joi.object({
+  _id: Joi.string().min(24),
+  userId: Joi.string().min(24),
+  productId: Joi.string().min(24),
+  amount: Joi.number().min(1).required(),
+});
 
-export const productSchema = Joi.defaults((schema) => {
-  return schema.required();
-})
-  .object({
-    _id: Joi.string().min(24),
-    name: Joi.string().min(1).required(),
-    price: Joi.number().min(1).required(),
-    image: Joi.string().min(1).required(),
-    amountInStock: Joi.number().min(1).required(),
-  })
-  .unknown(false);
+export const productSchema = Joi.object({
+  _id: Joi.string().min(24),
+  name: Joi.string().min(1).required(),
+  price: Joi.number().strict().required(),
+  image: Joi.string().min(1).required(),
+  amountInStock: Joi.number().min(0).strict().required(),
+});
 
-export const userSchema = Joi.defaults((schema) => {
-  return schema.required();
-})
-  .object({
-    _id: Joi.string().min(24),
-    name: Joi.string().min(1).required(),
-    isAdmin: Joi.boolean().required(),
-  })
-  .unknown(false);
+export const userSchema = Joi.object({
+  _id: Joi.string().min(24),
+  name: Joi.string().min(1).required(),
+  isAdmin: Joi.boolean().required(),
+});
 
-export function isValidCart(cart: Carts): boolean {
-  let result = cartSchema.validate(cart);
-  return !result.error;
+export function isValidCart(cart: Carts) {
+  return cartSchema.validate(cart);
 }
 
-export function isValidProduct(product: Products): boolean {
-  let result = productSchema.validate(product);
-  return !result.error;
+export function isValidProduct(product: Products) {
+  return productSchema.validate(product);
 }
-export function isValidUser(user: Users): boolean {
-  let result = userSchema.validate(user);
-  return !result.error;
+export function isValidUser(user: Users) {
+  return userSchema.validate(user);
 }

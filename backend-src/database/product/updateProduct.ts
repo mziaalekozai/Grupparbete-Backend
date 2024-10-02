@@ -5,14 +5,14 @@ import { ObjectId, UpdateResult } from "mongodb";
 async function updateProduct(id: ObjectId, body: Object) {
   const col = await getProductsCollection();
   const filter = { _id: id };
-  //   const update = { $set: body };
+
   const result: UpdateResult<Products> = await col.updateOne(filter, {
     $set: body,
   });
 
   if (!result.acknowledged) {
     console.log("Could not update the product.");
-    return null;
+    return;
   }
 
   console.log(`Updated ${result.matchedCount} product(s).`);
