@@ -1,4 +1,3 @@
-// import { WithId } from "mongodb";
 import { Products } from "../../models/product.js";
 import { getProductsCollection } from "./products.js";
 import { InsertOneResult, ObjectId } from "mongodb";
