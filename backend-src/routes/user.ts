@@ -15,20 +15,7 @@ router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
   const allUsers: WithId<Users>[] = await getAllUsers();
   res.send(allUsers);
 });
-router.post("/reset", async (req, res) => {
-  try {
-    console.log("Resetting database...");
-    const result = await resetDatabase(); // Assuming resetDatabase returns a promise
-    res.status(200).json(result);
-  } catch (error) {
-    console.error("Error resetting database:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to reset the database",
-      // error: error.toString(),
-    });
-  }
-});
+
 router.get("/search", async (req, res) => {
   const name: string = req.query.q as string;
   if (!name.trim()) {
@@ -48,7 +35,7 @@ router.get("/search", async (req, res) => {
   }
 });
 
-router.post("/add", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   console.log("hej user");
 
   const newUser: Users = req.body;
@@ -91,4 +78,19 @@ router.delete("/:id", async (req: Request, res: Response) => {
   const objectId = new ObjectId(id);
   await deletUser(objectId);
   res.sendStatus(204);
+});
+
+router.post("/reset", async (req, res) => {
+  try {
+    console.log("Resetting database...");
+    const result = await resetDatabase(); // Assuming resetDatabase returns a promise
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error resetting database:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to reset the database",
+      // error: error.toString(),
+    });
+  }
 });
