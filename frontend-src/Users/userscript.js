@@ -19,6 +19,26 @@ document.addEventListener("DOMContentLoaded", () => {
     authenticateUser(username);
   }
 
+  // const resetDbButton = document.querySelector("#reset-db");
+
+  // resetDbButton.addEventListener("click", async () => {
+  //   // resetDatabase();
+  //   try {
+  //     const response = await fetch("/reset", {
+  //       method: "POST",
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log(data);
+  //     } else {
+  //       console.error("Failed to reset database");
+  //     }
+  //   } catch (error) {
+  //     console.error("Network or server error", error);
+  //   }
+  // });
+
   async function authenticateUser(username) {
     try {
       const response = await fetch(
@@ -56,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Failed to fetch users:", error);
     }
   }
+  // uppdate users list
   function updateUsersList(users) {
     UserList = document.querySelector(".usersList");
     UserList.innerHTML = "";
@@ -86,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // toggleUserForm.
   function toggleUserForm(show) {
     const UserSection = document.querySelector(".add-show-btn");
     if (show) {
@@ -94,10 +116,11 @@ document.addEventListener("DOMContentLoaded", () => {
       createUserForm(formDiv);
       UserSection.appendChild(formDiv);
     } else {
-      UserSection.innerHTML = ""; // Clear the section if needed
+      UserSection.innerHTML = "";
     }
   }
 
+  //  create html element form for username.
   function createUserForm(form) {
     const usernameInput = document.createElement("input");
     usernameInput.placeholder = "Ange användarnamn";
@@ -122,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // creates a label-input pair within a container element.
   function createLabelInputPair(labelText, inputElement) {
     const label = document.createElement("label");
     label.innerText = labelText;
@@ -131,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return container;
   }
 
+  // Add new user  adds a new user by sending a POST request
   async function addUser(event, usernameInput, isAdminInput) {
     event.preventDefault();
     const newUser = {
