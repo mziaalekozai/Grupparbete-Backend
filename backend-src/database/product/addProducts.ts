@@ -9,6 +9,7 @@ async function addProduct(product: Products): Promise<ObjectId | null> {
     console.log("Could not add the product");
     return null;
   }
+
   return result.insertedId;
 }
 
