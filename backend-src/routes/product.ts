@@ -13,16 +13,6 @@ export const router: Router = express.Router();
 router.get("/", async (req: Request, res: Response) => {
   const allProducts: WithId<Products>[] = await getAllProducts();
   res.send(allProducts);
-  //   try {
-  //     const allProducts: WithId<Products>[] = await getAllProducts();
-  //     if (allProducts.length === 0) {
-  //       return res.status(404).json({ message: "Inga produkter hittades" });
-  //     }
-  //     res.status(200).json(allProducts);
-  //   } catch (error) {
-  //     console.error("Fel vid hämtning av produkter:", error);
-  //     res.status(500).json({ message: "Ett serverfel uppstod" });
-  //   }
 });
 
 router.get("/search", async (req, res) => {
