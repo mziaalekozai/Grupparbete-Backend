@@ -13,7 +13,7 @@ export const router: Router = express.Router();
 router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
   try {
     const allUsers: WithId<Users>[] = await getAllUsers();
-    if (!getAllUsers || getAllUsers.length === 0) {
+    if (!allUsers || allUsers.length === 0) {
       return res.sendStatus(404);
     }
     res.send(allUsers);
