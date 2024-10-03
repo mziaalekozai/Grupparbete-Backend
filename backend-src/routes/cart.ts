@@ -7,6 +7,7 @@ import { updateCart } from "../database/cart/uppdateCart.js";
 import { deleteCart } from "../database/cart/deleteCarts.js";
 import { addCart } from "../database/cart/addCart.js";
 import { isValidCart } from "../data/validationCart.js";
+import { creatCartList } from "../database/cart/creatCartsList.js";
 export const router: Router = express.Router();
 
 router.get("/", async (req: Request, res: Response<WithId<Carts>[]>) => {
@@ -14,15 +15,15 @@ router.get("/", async (req: Request, res: Response<WithId<Carts>[]>) => {
   res.send(allInCart);
 });
 
-router.post("/", async (req: Request, res: Response) => {
-  const newCart: Carts = req.body;
-  const insertCart = await addCart(newCart);
-  if (insertCart == null) {
-    res.status(400).json({ message: "Failed to create cart" });
-    return;
-  }
-  res.status(201).json(newCart);
-});
+// router.post("/", async (req: Request, res: Response) => {
+//   const newCart: Carts = req.body;
+//   const insertCart = await addCart(newCart);
+//   if (insertCart == null) {
+//     res.status(400).json({ message: "Failed to create cart" });
+//     return;
+//   }
+//   res.status(201).json(newCart);
+// });
 
 router.get("/:id", async (req: Request, res: Response) => {
   try {
@@ -63,6 +64,7 @@ router.post("/", async (req: Request, res: Response) => {
   const newCart: Carts = req.body;
   if (isValidCart(newCart)) {
     await addCart(newCart);
+    await creatCartList();
     res.sendStatus(201);
   } else {
     res.sendStatus(400);

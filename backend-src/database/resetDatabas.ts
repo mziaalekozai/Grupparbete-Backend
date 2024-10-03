@@ -1,7 +1,7 @@
 import users from "../data/users.js";
 import products from "../data/products.js";
 import carts from "../data/cart.js";
-import { getProductsCollection } from "./products.js";
+import { getProductsCollection } from "./product/products.js";
 import { getUsersCollection } from "./user/user.js";
 import { getCartCollection } from "./cart/cart.js";
 

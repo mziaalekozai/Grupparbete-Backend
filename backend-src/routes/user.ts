@@ -1,7 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Users } from "../models/user.js";
-import { WithId, ObjectId, Db } from "mongodb";
-import { WithId, ObjectId, UpdateResult } from "mongodb";
+import { WithId, ObjectId, UpdateResult, Db } from "mongodb";
 import { getAllUsers } from "../database/user/getAllUsers.js";
 import { getOneUser } from "../database/user/getOneUser.js";
 import { updateUser } from "../database/user/updateUser.js";
