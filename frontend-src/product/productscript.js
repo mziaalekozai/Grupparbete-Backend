@@ -1,7 +1,7 @@
 import { createProductElement } from "./createProductElement.js";
 const ul = document.querySelector(".product-list");
 
-async function fetchAndDisplayProducts() {
+export async function fetchAndDisplayProducts() {
   const response = await fetch("/product", {
     method: "GET",
   });
