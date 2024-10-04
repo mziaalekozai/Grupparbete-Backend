@@ -1,29 +1,26 @@
 import express, { Request, Response, Router } from "express";
 import { Carts } from "../models/cart.js";
-import { WithId, ObjectId } from "mongodb";
+import { WithId, ObjectId, UpdateResult } from "mongodb";
 import { getAllCarts } from "../database/cart/getAllCarts.js";
 import { getOneCart } from "../database/cart/getOneCart.js";
 import { updateCart } from "../database/cart/uppdateCart.js";
 import { deleteCart } from "../database/cart/deleteCarts.js";
 import { addCart } from "../database/cart/addCart.js";
-import { isValidCart } from "../data/validationCart.js";
+import { isValidCart, isValidCartPut } from "../data/validationCart.js";
 import { creatCartList } from "../database/cart/creatCartsList.js";
 export const router: Router = express.Router();
 
 router.get("/", async (req: Request, res: Response<WithId<Carts>[]>) => {
-  const allInCart: WithId<Carts>[] = await getAllCarts();
-  res.send(allInCart);
+  try {
+    const allInCart: WithId<Carts>[] = await getAllCarts();
+    if (!allInCart || allInCart.length === 0) {
+      return res.sendStatus(404);
+    }
+    res.status(200).json(allInCart);
+  } catch (error) {
+    res.sendStatus(500);
+  }
 });
-
-// router.post("/", async (req: Request, res: Response) => {
-//   const newCart: Carts = req.body;
-//   const insertCart = await addCart(newCart);
-//   if (insertCart == null) {
-//     res.status(400).json({ message: "Failed to create cart" });
-//     return;
-//   }
-//   res.status(201).json(newCart);
-// });
 
 router.get("/:id", async (req: Request, res: Response) => {
   try {
@@ -37,19 +34,35 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     console.error("Error fetching cart:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500);
   }
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-  const objectId = new ObjectId(id);
-  if (!ObjectId.isValid(id)) {
-    return res.status(400).send({ message: "Invalid product ID" });
+  try {
+    const id: string = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400);
+    }
+    const objectId: ObjectId = new ObjectId(id);
+    const updatedFields: Carts = req.body;
+    if (isValidCartPut(updatedFields)) {
+      const result: UpdateResult<Carts> | undefined = await updateCart(
+        objectId,
+        updatedFields
+      );
+      if (result?.matchedCount === 0) {
+        return res.status(404);
+      } else {
+        res.sendStatus(204);
+      }
+    } else {
+      return res.sendStatus(400);
+    }
+  } catch (error) {
+    console.error("Error updating cart:", error);
+    res.status(500);
   }
-  const updatedFields = req.body;
-  await updateCart(objectId, updatedFields);
-  res.sendStatus(201);
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
@@ -59,7 +72,6 @@ router.delete("/:id", async (req: Request, res: Response) => {
   res.sendStatus(204);
 });
 
-// POST a new product
 router.post("/", async (req: Request, res: Response) => {
   const newCart: Carts = req.body;
   if (isValidCart(newCart)) {
