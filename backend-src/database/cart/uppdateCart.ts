@@ -11,7 +11,7 @@ async function updateCart(id: ObjectId, body: Object) {
 
   if (!result.acknowledged) {
     console.log("Could not update the cart.");
-    return null;
+    return;
   }
 
   console.log(`Updated ${result.modifiedCount} cart(s).`);
