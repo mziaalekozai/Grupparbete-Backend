@@ -5,7 +5,6 @@ import { ObjectId, UpdateResult } from "mongodb";
 async function updateCart(id: ObjectId, body: Object) {
   const col = await getCartCollection();
   const filter = { _id: id };
-  //   const update = { $set: body };
   const result: UpdateResult<Carts> = await col.updateOne(filter, {
     $set: body,
   });

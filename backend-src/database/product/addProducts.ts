@@ -1,4 +1,3 @@
-// import { WithId } from "mongodb";
 import { Products } from "../../models/product.js";
 import { getProductsCollection } from "./products.js";
 import { InsertOneResult, ObjectId } from "mongodb";
@@ -10,6 +9,7 @@ async function addProduct(product: Products): Promise<ObjectId | null> {
     console.log("Could not add the product");
     return null;
   }
+
   return result.insertedId;
 }
 

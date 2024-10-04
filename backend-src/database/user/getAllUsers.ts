@@ -1,5 +1,4 @@
 import { WithId } from "mongodb";
-
 import { Users } from "../../models/user.js";
 import { getUsersCollection } from "./user.js";
 

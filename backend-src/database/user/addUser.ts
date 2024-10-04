@@ -11,7 +11,6 @@ async function addUser(user: Users): Promise<ObjectId | null> {
     return null;
   }
   return result.insertedId;
-  //   console.log(`Added product with ID ${result.insertedId}`);
 }
 
 export { addUser };

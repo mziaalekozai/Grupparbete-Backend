@@ -1,18 +1,25 @@
 import express, { Request, Response, Router } from "express";
 import { Products } from "../models/product.js";
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId, UpdateResult, WithId } from "mongodb";
 import { getAllProducts } from "../database/product/getAllProducts.js";
 import { getOneProduct } from "../database/product/getOneProduct.js";
 import { updateProduct } from "../database/product/updateProduct.js";
 import { deleteProduct } from "../database/product/deleteProduct.js";
 import { searchProduct } from "../database/product/searchProduct.js";
 import { addProduct } from "../database/product/addProducts.js";
-import { isValidProduct, productSchema } from "../data/validation.js";
+import { isValidProduct } from "../data/validation.js";
 export const router: Router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
-  const allProducts: WithId<Products>[] = await getAllProducts();
-  res.send(allProducts);
+  try {
+    const allProducts: WithId<Products>[] = await getAllProducts();
+    if (!allProducts || allProducts.length === 0) {
+      return res.sendStatus(404);
+    }
+    res.send(allProducts);
+  } catch (error) {
+    res.sendStatus(500);
+  }
 });
 
 router.get("/search", async (req, res) => {
@@ -36,13 +43,17 @@ router.get("/search", async (req, res) => {
 
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const product = await getOneProduct(id);
-    if (product) {
-      res.status(200).json(product);
-    } else {
+    const id: string = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.sendStatus(400);
+    }
+    const objectId: ObjectId = new ObjectId(id);
+    const product: WithId<Products>[] = await getOneProduct(objectId);
+    if (product.length < 1) {
       res.status(404).json({ message: "Product not found" });
     }
+
+    res.status(200).json(product);
   } catch (error: any) {
     console.error("Error fetching product:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -53,31 +64,28 @@ router.put("/:id", async (req: Request, res: Response) => {
   try {
     const id: string = req.params.id;
     if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid product ID" });
+      return res.sendStatus(400);
     }
-    const objectId = new ObjectId(id);
-    const updatedFields = req.body;
-    if (Object.keys(updatedFields).length === 0) {
-      return res.status(400).json({ message: "No fields to update" });
+    const objectId: ObjectId = new ObjectId(id);
+    const updatedFields: Products = req.body;
+    const result: UpdateResult<Products> | undefined = await updateProduct(
+      objectId,
+      updatedFields
+    );
+    if (result?.matchedCount === 0) {
+      return res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
     }
-    const result = await updateProduct(objectId, updatedFields);
-
-    if (!result || result.matchedCount === 0) {
-      return res
-        .status(404)
-        .json({ message: "Product not found or no changes applied" });
-    }
-    res.sendStatus(204);
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).json({ message: "Error updating product" });
+    console.error("Wrong with updating the product");
+    res.sendStatus(500);
   }
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-
   try {
+    const id: string = req.params.id;
     const objectId = new ObjectId(id);
     await deleteProduct(objectId);
     res.sendStatus(204);
@@ -89,22 +97,12 @@ router.delete("/:id", async (req: Request, res: Response) => {
 
 // POST a new product
 router.post("/", async (req: Request, res: Response) => {
-  try {
-    const newProduct: Products = req.body;
-    if (!isValidProduct(newProduct)) {
-      return res
-        .status(400)
-        .json({ message: "Failed to create product. Invalid data." });
-    }
-    const insertProduct = await addProduct(newProduct);
-    if (!insertProduct) {
-      return res
-        .status(500)
-        .json({ message: "Failed to add the product to the database." });
-    }
-    res.status(201).json(newProduct);
-  } catch (error) {
-    console.error("Error adding product:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+  const newProduct: Products = req.body;
+
+  if (isValidProduct(newProduct)) {
+    await addProduct(newProduct);
+    res.sendStatus(201);
+  } else {
+    res.sendStatus(400);
   }
 });

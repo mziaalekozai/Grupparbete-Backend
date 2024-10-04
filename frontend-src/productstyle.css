@@ -58,3 +58,6 @@ label {
   display: flex;
   gap: 1em;
 }
+#search-product {
+  margin-top: 1em;
+}
