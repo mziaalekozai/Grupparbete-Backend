@@ -9,18 +9,12 @@ export function createFormProduct(product = {}, onSubmit) {
   nameInput.required = true;
   nameInput.value = product.name || "";
 
-  const nameError = document.createElement("p");
-  nameError.classList.add("error-message");
-
   const priceInput = document.createElement("input");
   const priceLabel = document.createElement("label");
   priceLabel.innerText = "Pris:";
   priceInput.setAttribute("id", "toy-price");
   priceInput.required = true;
   priceInput.value = product.price || "";
-
-  const priceError = document.createElement("p");
-  priceError.classList.add("error-message");
 
   const imageInput = document.createElement("input");
   const imageLabel = document.createElement("label");
@@ -29,18 +23,12 @@ export function createFormProduct(product = {}, onSubmit) {
   imageInput.required = true;
   imageInput.value = product.image || "";
 
-  const imageError = document.createElement("p");
-  imageError.classList.add("error-message");
-
   const amountInput = document.createElement("input");
   const amountLabel = document.createElement("label");
   amountLabel.innerText = "Antal:";
   amountInput.setAttribute("id", "toy-amount");
   amountInput.required = true;
   amountInput.value = product.amountInStock || "";
-
-  const amountError = document.createElement("p");
-  amountError.classList.add("error-message");
 
   const submitButton = document.createElement("button");
   submitButton.innerText = product._id ? "Ändra" : "Lägg till";
@@ -50,16 +38,12 @@ export function createFormProduct(product = {}, onSubmit) {
   form.append(
     nameLabel,
     nameInput,
-    nameError,
     priceLabel,
     priceInput,
-    priceError,
     imageLabel,
     imageInput,
-    imageError,
     amountLabel,
     amountInput,
-    amountError,
     submitButton
   );
 
