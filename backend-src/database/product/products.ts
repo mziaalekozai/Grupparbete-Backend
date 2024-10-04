@@ -18,4 +18,4 @@ async function getProductsCollection(): Promise<Collection<Products>> {
   return db.collection<Products>("products");
 }
 
-export { getProductsCollection, Products };
+export { getProductsCollection };

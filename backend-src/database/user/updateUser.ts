@@ -11,10 +11,10 @@ async function updateUser(id: ObjectId, body: Object) {
 
   if (!result.acknowledged) {
     console.log("Could not update the user.");
-    return null;
+    return;
   }
 
-  console.log(`Updated ${result.modifiedCount} user(s).`);
+  console.log(`Updated ${result.matchedCount} user(s).`);
   return result;
 }
 

@@ -11,11 +11,18 @@
     <script type="module" src="./product/createProductElement.js"></script>
     <script type="module" src="./product/addProduct.js"></script>
     <script type="module" src="./product/changeProduct.js"></script>
+    <script type="module" src="./resetData.js"></script>
     <script type="module" src="./product/createFormProduct.js"></script>
+	<link rel="stylesheet" href="./cart/cart.css" />
+	<script type="module" src="./cart/cartscript.js"></script>
+
   </head>
 
   <body>
     <h1>Välkomen till Leksaker Webshop</h1>
+    <section>  
+    <button id="reset-db">Reset Database</button>
+    </section>
     <section class="logIn-section">
       <form id="loginForm">
         <input type="text" id="username" placeholder="Användarnamn" />
@@ -33,6 +40,8 @@
         <button class="logOut-btn">logga ut</button>
         <!-- <button id="get-products">Leksaker</button> -->
         <button class="add-toy-btn">Lägg till leksak</button>
+		<button class="cart-btn">Varukorg</button>
+		
       </div>
       <div class="search-div">
         <label id="search-product" for="search-product">Sök Leksak</label>
@@ -40,5 +49,14 @@
       </div>
       <ul class="product-list"></ul>
     </section>
+
+	<section class="cart-section">
+		<button class = "back-btn">Tillbaka till produkter</button>
+    <button class="get-all-btn">Visa alla kundkorgar</button>
+		<div>
+			<ul class="cart-list">
+			</ul>
+		</div>
+	</section>
   </body>
 </html>

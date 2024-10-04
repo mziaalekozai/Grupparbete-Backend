@@ -7,7 +7,7 @@ import { updateProduct } from "../database/product/updateProduct.js";
 import { deleteProduct } from "../database/product/deleteProduct.js";
 import { searchProduct } from "../database/product/searchProduct.js";
 import { addProduct } from "../database/product/addProducts.js";
-import { isValidProduct, productSchema } from "../data/validation.js";
+import { isValidProduct } from "../data/validation.js";
 export const router: Router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
@@ -61,10 +61,6 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const { error } = productSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({ message: error.details[0].message });
-  }
   try {
     const id: string = req.params.id;
     if (!ObjectId.isValid(id)) {
@@ -88,9 +84,8 @@ router.put("/:id", async (req: Request, res: Response) => {
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-
   try {
+    const id: string = req.params.id;
     const objectId = new ObjectId(id);
     await deleteProduct(objectId);
     res.sendStatus(204);
@@ -103,6 +98,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
 // POST a new product
 router.post("/", async (req: Request, res: Response) => {
   const newProduct: Products = req.body;
+
   if (isValidProduct(newProduct)) {
     await addProduct(newProduct);
     res.sendStatus(201);
