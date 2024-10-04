@@ -65,3 +65,10 @@ export function createProductElement(product, ul) {
 
   ul.append(div);
 }
+
+export function removeAllProducts(ul) {
+  const productDivs = ul.querySelectorAll(".toy-list");
+  productDivs.forEach((div) => {
+    div.remove();
+  });
+}
