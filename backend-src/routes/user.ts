@@ -26,18 +26,21 @@ router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
 router.post("/", async (req: Request, res: Response) => {
   const newUser: Users = req.body;
   try {
-    if (isValidUser(newUser)) {
-      await addUser(newUser);
-      console.log("laggt till ", newUser);
-      res.sendStatus(201);
-    } else {
-      console.log("gick inte, försök igen.");
-      res.sendStatus(400);
+    if (!isValidUser(newUser)) {
+      return res
+        .status(400)
+        .json({ message: "Failed to create user. Invalid data." });
     }
+    const insertUser = await addUser(newUser);
+    if (!insertUser) {
+      return res
+        .status(500)
+        .json({ message: "Failed to add the user to the database." });
+    }
+    res.status(201).json(newUser);
   } catch (error) {
-    console.log(error);
-  } finally {
-    console.log("Gått förbi alla saker in i finally");
+    console.error("Error adding user:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 router.post("/reset", async (req, res) => {
@@ -55,34 +58,6 @@ router.post("/reset", async (req, res) => {
   }
 });
 router.get("/search", async (req, res) => {
-  const name: string = req.query.q as string;
-  if (!name.trim()) {
-    return res.status(400).json({ message: "Search query cannot be empty" });
-  }
-
-  try {
-    const searchResults = await searchUser(name);
-    if (searchResults.length > 0) {
-      res.status(200).json(searchResults);
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-router.post("/add", async (req: Request, res: Response) => {
-  console.log("hej user");
-
-  const newUser: Users = req.body;
-  const insertUser = await addUser(newUser);
-  if (insertUser == null) {
-    res.status(400).json({ message: "Failed to create a new user" });
-    return;
-  }
-  res.status(201).json(newUser);
   const name: string = req.query.q as string;
   if (!name.trim()) {
     return res.status(400).json({ message: "Search query cannot be empty" });

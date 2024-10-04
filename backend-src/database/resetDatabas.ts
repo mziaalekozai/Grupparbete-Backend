@@ -22,7 +22,7 @@ export async function resetDatabase() {
     // Insert default data
     await usersCollection.insertMany(users);
     await productsCollection.insertMany(products);
-    // await cartsCollection.insertMany(carts);
+    await cartsCollection.insertMany(carts);
     console.log("Default users, products, and carts re-inserted.");
 
     return { success: true, message: "Database has been reset successfully." };
