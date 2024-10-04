@@ -26,50 +26,38 @@ router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
 router.post("/", async (req: Request, res: Response) => {
   const newUser: Users = req.body;
   try {
-    if (isValidUser(newUser)) {
-      await addUser(newUser);
-      console.log("laggt till ", newUser);
-      res.sendStatus(201);
-    } else {
-      console.log("gick inte, försök igen.");
-      res.sendStatus(400);
+    if (!isValidUser(newUser)) {
+      return res
+        .status(400)
+        .json({ message: "Failed to create user. Invalid data." });
     }
-  } catch (error) {
-    console.log(error);
-  } finally {
-    console.log("Gått förbi alla saker in i finally");
-  }
-});
-
-router.get("/search", async (req, res) => {
-  const name: string = req.query.q as string;
-  if (!name.trim()) {
-    return res.status(400).json({ message: "Search query cannot be empty" });
-  }
-
-  try {
-    const searchResults = await searchUser(name);
-    if (searchResults.length > 0) {
-      res.status(200).json(searchResults);
-    } else {
-      res.status(404).json({ message: "User not found" });
+    const insertUser = await addUser(newUser);
+    if (!insertUser) {
+      return res
+        .status(500)
+        .json({ message: "Failed to add the user to the database." });
     }
+    res.status(201).json(newUser);
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error adding user:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-router.post("/", async (req: Request, res: Response) => {
-  console.log("hej user");
-
-  const newUser: Users = req.body;
-  const insertUser = await addUser(newUser);
-  if (insertUser == null) {
-    res.status(400).json({ message: "Failed to create a new user" });
-    return;
+router.post("/reset", async (req, res) => {
+  try {
+    console.log("Resetting database...");
+    const result = await resetDatabase(); // Assuming resetDatabase returns a promise
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error resetting database:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to reset the database",
+      // error: error.toString(),
+    });
   }
-  res.status(201).json(newUser);
+});
+router.get("/search", async (req, res) => {
   const name: string = req.query.q as string;
   if (!name.trim()) {
     return res.status(400).json({ message: "Search query cannot be empty" });
