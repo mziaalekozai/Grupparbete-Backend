@@ -7,6 +7,8 @@ const ul = document.querySelector(".product-list");
 
 addButton.addEventListener("click", () => {
   const form = createFormProduct({}, async (newToy) => {
+    // console.log("newToy: ", newToy);
+
     try {
       const response = await fetch("/product", {
         method: "POST",
@@ -18,11 +20,19 @@ addButton.addEventListener("click", () => {
 
       if (response.ok) {
         const data = await response.json();
-        const newProduct = await fetch(`/product/${data.insertedId}`);
-        const productData = await newProduct.json();
-        console.log("Leksak tillagd: ", productData);
-        createProductElement(productData, ul);
-        form.remove();
+        console.log("Response data: ", data);
+
+        const insertedId = data.insertedId || data._id;
+
+        if (insertedId) {
+          const newProduct = await fetch(`/product/${insertedId}`);
+          const productData = await newProduct.json();
+          console.log("Leksak tillagd: ", productData);
+          createProductElement(productData, ul);
+          form.remove();
+        } else {
+          console.error("insertedId och _id är undefined: ", data);
+        }
       } else {
         console.error("Fel vid tillägg av leksak: ", response.statusText);
       }

@@ -8,8 +8,7 @@ import { deletUser } from "../database/user/deleteUser.js";
 import { addUser } from "../database/user/addUser.js";
 import { searchUser } from "../database/user/searchUser.js";
 import { resetDatabase } from "../database/resetDatabas.js";
-
-import { isValidUser } from "../data/validationUser.js";
+import { isValidUser, isValidUserPut } from "../data/validationUser.js";
 export const router: Router = express.Router();
 
 router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
@@ -18,26 +17,30 @@ router.get("/", async (req: Request, res: Response<WithId<Users>[]>) => {
     if (!allUsers || allUsers.length === 0) {
       return res.sendStatus(404);
     }
-    res.send(allUsers);
+    res.status(200).json(allUsers);
   } catch (error) {
     res.sendStatus(500);
   }
 });
+
 router.post("/", async (req: Request, res: Response) => {
   const newUser: Users = req.body;
   try {
-    if (isValidUser(newUser)) {
-      await addUser(newUser);
-      console.log("laggt till ", newUser);
-      res.sendStatus(201);
-    } else {
-      console.log("gick inte, försök igen.");
-      res.sendStatus(400);
+    if (!isValidUser(newUser)) {
+      return res
+        .status(400)
+        .json({ message: "Failed to create user. Invalid data." });
     }
+    const insertUser = await addUser(newUser);
+    if (!insertUser) {
+      return res
+        .status(500)
+        .json({ message: "Failed to add the user to the database." });
+    }
+    res.status(201).json(newUser);
   } catch (error) {
-    console.log(error);
-  } finally {
-    console.log("Gått förbi alla saker in i finally");
+    console.error("Error adding user:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 router.post("/reset", async (req, res) => {
@@ -55,34 +58,6 @@ router.post("/reset", async (req, res) => {
   }
 });
 router.get("/search", async (req, res) => {
-  const name: string = req.query.q as string;
-  if (!name.trim()) {
-    return res.status(400).json({ message: "Search query cannot be empty" });
-  }
-
-  try {
-    const searchResults = await searchUser(name);
-    if (searchResults.length > 0) {
-      res.status(200).json(searchResults);
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-router.post("/add", async (req: Request, res: Response) => {
-  console.log("hej user");
-
-  const newUser: Users = req.body;
-  const insertUser = await addUser(newUser);
-  if (insertUser == null) {
-    res.status(400).json({ message: "Failed to create a new user" });
-    return;
-  }
-  res.status(201).json(newUser);
   const name: string = req.query.q as string;
   if (!name.trim()) {
     return res.status(400).json({ message: "Search query cannot be empty" });
@@ -119,29 +94,60 @@ router.get("/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 router.put("/:id", async (req: Request, res: Response) => {
   try {
     const id: string = req.params.id;
+
     if (!ObjectId.isValid(id)) {
-      return res.status(400).send({ message: "Invalid product ID" });
+      return res.sendStatus(400);
     }
     const objectId: ObjectId = new ObjectId(id);
     const updatedFields: Users = req.body;
-    const result: UpdateResult<Users> | undefined = await updateUser(
-      objectId,
-      updatedFields
-    );
-    if (result?.matchedCount === 0) {
-      return res.sendStatus(404);
+    if (isValidUserPut(updatedFields)) {
+      const result: UpdateResult<Users> | undefined = await updateUser(
+        objectId,
+        updatedFields
+      );
+
+      if (result?.matchedCount === 0) {
+        return res.sendStatus(404);
+      } else {
+        return res.sendStatus(204);
+      }
     } else {
-      res.sendStatus(204);
+      return res.sendStatus(400);
     }
   } catch (error) {
-    console.error("Wrong with updating the user");
+    console.error("wrong with update user");
     res.sendStatus(500);
   }
 });
+
+// router.put("/:id", async (req: Request, res: Response) => {
+//   try {
+//     const id: string = req.params.id;
+//     if (!ObjectId.isValid(id)) {
+//       return res.status(400);
+//     }
+//     const objectId: ObjectId = new ObjectId(id);
+//     const updatedFields: Users = req.body;
+//     if (!isValidUserPut(updatedFields)) {
+//       return res.status(400);
+//     }
+//     const result: UpdateResult<Users> | undefined = await updateUser(
+//       objectId,
+//       updatedFields
+//     );
+//     if (result?.matchedCount === 0) {
+//       return res.status(404);
+//     } else {
+//       res.sendStatus(204);
+//     }
+//   } catch (error) {
+//     console.error("Wrong with updating the user");
+//     res.sendStatus(500);
+//   }
+// });
 
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
