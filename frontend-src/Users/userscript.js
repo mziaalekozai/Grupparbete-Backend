@@ -1,3 +1,6 @@
+export let loggedInUser;
+export let loggedInUserName;
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#loginForm");
   const productSection = document.querySelector(".product-section");
@@ -29,6 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const userFound = users.find((user) => user.name === username);
 
       if (userFound) {
+        loggedInUser = userFound._id;
+        loggedInUserName = userFound.name;
         logInSection.style.display = "none";
         productSection.style.display = "grid";
       } else {
@@ -44,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     productSection.style.display = "none";
     error.style.display = "none";
     UserList.style.display = "none";
+
     // formDiv.style.display = "none";
   }
 
