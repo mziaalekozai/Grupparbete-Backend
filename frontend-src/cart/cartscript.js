@@ -27,7 +27,6 @@ cartButton.addEventListener("click", async () => {
       if (loggedInUser === cartItem.userId)
         product.forEach((productItem) => {
           if (cartItem.productId === productItem._id) {
-            console.log("Hittade matchande produkt");
             const div = document.createElement("div");
             const cartList = document.createElement("div");
             const productDiv = document.createElement("div");
@@ -76,7 +75,6 @@ getAllButton.addEventListener("click", async () => {
     cart.forEach((cartItem) => {
       product.forEach((productItem) => {
         if (cartItem.productId === productItem._id) {
-          console.log("Hittade matchande produkt");
           const user = users.find((u) => u._id === cartItem.userId);
           const div = document.createElement("div");
           const cartList = document.createElement("div");
