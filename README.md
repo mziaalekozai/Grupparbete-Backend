@@ -26,7 +26,7 @@ Users {
 }
 ```
 
-<b>Hämta alla produkter (GET /product)</b>
+<b>Hämta alla produkter (GET /product)</b><br>
 Hämtar en lista över alla leksaker tillgängliga i butiken.
 ```js
 const response = await fetch("/product", {
@@ -35,7 +35,7 @@ const response = await fetch("/product", {
   const data = await response.json();
 ```
 
-<b>Hämta specifik produkt (GET /product/)</b>
+<b>Hämta specifik produkt (GET /product/)</b><br>
 Hämtar information om en specifik produkt baserat på produktens unika ID.
 
 ```js
