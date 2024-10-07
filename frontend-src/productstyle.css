@@ -34,8 +34,7 @@ ul {
   margin: 0.3em;
 }
 
-.delete-btn {
-}
+
 
 .form-div {
   border: black 1px solid;
@@ -51,8 +50,7 @@ ul {
 input {
   margin-bottom: 0.5em;
 }
-label {
-}
+
 
 .button-div {
   display: flex;
@@ -61,3 +59,5 @@ label {
 #search-product {
   margin-top: 1em;
 }
+
+
