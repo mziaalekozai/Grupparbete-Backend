@@ -3,7 +3,7 @@ Välkommen till dokumentationen för Leksaksaffärens REST API. Detta API hanter
 för att interagera med butikens resurser.
 
 
-==Nedan visas objektstrukturen i databasen:==
+<b>Nedan visas objektstrukturen i databasen:</b>
 ```js
 Carts {
   userId?: ObjectId;
