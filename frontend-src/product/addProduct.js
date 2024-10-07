@@ -7,8 +7,6 @@ const ul = document.querySelector(".product-list");
 
 addButton.addEventListener("click", () => {
   const form = createFormProduct({}, async (newToy) => {
-    // console.log("newToy: ", newToy);
-
     try {
       const response = await fetch("/product", {
         method: "POST",
@@ -20,7 +18,6 @@ addButton.addEventListener("click", () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Response data: ", data);
 
         const insertedId = data.insertedId || data._id;
 

@@ -98,7 +98,6 @@ router.delete("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// POST a new product
 router.post("/", async (req: Request, res: Response) => {
   try {
     const newProduct: Products = req.body;

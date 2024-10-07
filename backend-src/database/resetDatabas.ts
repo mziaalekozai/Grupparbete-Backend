@@ -11,15 +11,13 @@ export async function resetDatabase() {
     const productsCollection = await getProductsCollection();
     const cartsCollection = await getCartCollection();
 
-    // Delete existing data
     const usersDeleted = await usersCollection.deleteMany({});
     const productsDeleted = await productsCollection.deleteMany({});
-    const cartsDeleted = await cartsCollection.deleteMany({});
+    // const cartsDeleted = await cartsCollection.deleteMany({});
     console.log(
-      `Deleted ${usersDeleted.deletedCount} users, ${productsDeleted.deletedCount} products, and ${cartsDeleted.deletedCount} carts.`
+      `Deleted ${usersDeleted.deletedCount} users, ${productsDeleted.deletedCount} products, and $`
     );
 
-    // Insert default data
     await usersCollection.insertMany(users);
     await productsCollection.insertMany(products);
     await cartsCollection.insertMany(carts);
@@ -31,7 +29,6 @@ export async function resetDatabase() {
     return {
       success: false,
       message: "Failed to reset the database",
-      //   error: error.toString(),
     };
   }
 }

@@ -46,14 +46,13 @@ router.post("/", async (req: Request, res: Response) => {
 router.post("/reset", async (req, res) => {
   try {
     console.log("Resetting database...");
-    const result = await resetDatabase(); // Assuming resetDatabase returns a promise
+    const result = await resetDatabase();
     res.status(200).json(result);
   } catch (error) {
     console.error("Error resetting database:", error);
     res.status(500).json({
       success: false,
       message: "Failed to reset the database",
-      // error: error.toString(),
     });
   }
 });
@@ -122,32 +121,6 @@ router.put("/:id", async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 });
-
-// router.put("/:id", async (req: Request, res: Response) => {
-//   try {
-//     const id: string = req.params.id;
-//     if (!ObjectId.isValid(id)) {
-//       return res.status(400);
-//     }
-//     const objectId: ObjectId = new ObjectId(id);
-//     const updatedFields: Users = req.body;
-//     if (!isValidUserPut(updatedFields)) {
-//       return res.status(400);
-//     }
-//     const result: UpdateResult<Users> | undefined = await updateUser(
-//       objectId,
-//       updatedFields
-//     );
-//     if (result?.matchedCount === 0) {
-//       return res.status(404);
-//     } else {
-//       res.sendStatus(204);
-//     }
-//   } catch (error) {
-//     console.error("Wrong with updating the user");
-//     res.sendStatus(500);
-//   }
-// });
 
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
