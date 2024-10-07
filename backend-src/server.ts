@@ -13,8 +13,6 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-console.log("test");
-
 app.use("/", express.static("./frontend-src"));
 
 app.use("/product", productsRouter);

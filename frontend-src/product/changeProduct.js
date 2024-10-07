@@ -8,8 +8,6 @@ export function changeProduct(productId) {
       if (Array.isArray(productArray) && productArray.length > 0) {
         const product = productArray[0];
 
-        // console.log("Hämtad produktdata: ", product);
-
         const form = createFormProduct(product, async (updatedToy) => {
           try {
             const response = await fetch(`/product/${productId}`, {

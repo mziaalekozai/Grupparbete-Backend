@@ -77,7 +77,6 @@ router.post("/", async (req: Request, res: Response) => {
   const newCart: Carts = req.body;
   if (isValidCart(newCart)) {
     await addCart(newCart);
-    // await creatCartList();
     res.sendStatus(201);
   } else {
     res.sendStatus(400);

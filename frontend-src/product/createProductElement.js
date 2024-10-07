@@ -1,7 +1,5 @@
 import { changeProduct } from "./changeProduct.js";
 export function createProductElement(product, ul) {
-  //   console.log("Produktdata i createProductElement: ", product);
-
   if (Array.isArray(product) && product.length > 0) {
     product = product[0];
   }

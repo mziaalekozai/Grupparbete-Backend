@@ -49,8 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     productSection.style.display = "none";
     error.style.display = "none";
     UserList.style.display = "none";
-
-    // formDiv.style.display = "none";
   }
 
   async function showUsers() {
@@ -62,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Failed to fetch users:", error);
     }
   }
-  // uppdate users list
+
   function updateUsersList(users) {
     UserList = document.querySelector(".usersList");
     UserList.innerHTML = "";
@@ -77,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // delete users
   async function deleteUser(userId, li) {
     try {
       const response = await fetch(`/user/${userId}`, { method: "DELETE" });
@@ -93,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // toggleUserForm.
   function toggleUserForm(show) {
     const UserSection = document.querySelector(".add-show-btn");
     if (show) {
@@ -106,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //  create html element form for username.
   function createUserForm(form) {
     const usernameInput = document.createElement("input");
     usernameInput.placeholder = "Ange användarnamn";
@@ -131,7 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // creates a label-input pair within a container element.
   function createLabelInputPair(labelText, inputElement) {
     const label = document.createElement("label");
     label.innerText = labelText;
@@ -141,7 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return container;
   }
 
-  // Add new user  adds a new user by sending a POST request
   async function addUser(event, usernameInput, isAdminInput) {
     event.preventDefault();
     const newUser = {
