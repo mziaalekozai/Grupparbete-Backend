@@ -13,6 +13,7 @@ export const router: Router = express.Router();
 router.get("/", async (req: Request, res: Response<WithId<Carts>[]>) => {
   try {
     const allInCart: WithId<Carts>[] = await getAllCarts();
+    await creatCartList();
     if (!allInCart || allInCart.length === 0) {
       return res.sendStatus(404);
     }
@@ -76,7 +77,7 @@ router.post("/", async (req: Request, res: Response) => {
   const newCart: Carts = req.body;
   if (isValidCart(newCart)) {
     await addCart(newCart);
-    await creatCartList();
+    // await creatCartList();
     res.sendStatus(201);
   } else {
     res.sendStatus(400);
