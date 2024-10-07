@@ -26,7 +26,7 @@ Users {
 }
 ```
 
-==Hämta alla produkter (GET /product)==
+<b>Hämta alla produkter (GET /product)</b>
 Hämtar en lista över alla leksaker tillgängliga i butiken.
 ```js
 const response = await fetch("/product", {
@@ -35,7 +35,7 @@ const response = await fetch("/product", {
   const data = await response.json();
 ```
 
-==Hämta specifik produkt (GET /product/)==
+<b>Hämta specifik produkt (GET /product/)</b>
 Hämtar information om en specifik produkt baserat på produktens unika ID.
 
 ```js
@@ -45,7 +45,7 @@ const response = await fetch("/product/6702d8f4a76aa19c92df852c", {
   const data = await response.json();
 ```
 
-==Lägg till ny produkt i databasen (POST /product)==
+<b>Lägg till ny produkt i databasen (POST /product)</b>
 
 ```js
 const response = await fetch("/product", {
@@ -54,7 +54,7 @@ const response = await fetch("/product", {
 ```
 
 
-==Uppdatera en produkt (PUT /product/)==
+<b>Uppdatera en produkt (PUT /product/)</b>
 
 ```js
 const response = await fetch(`/product/${productId}`, {
@@ -62,7 +62,7 @@ const response = await fetch(`/product/${productId}`, {
 const data = await response.json();)
 ``` 
 
-==Ta bort en produkt från databasen (DELETE /product/)==
+<b>Ta bort en produkt från databasen (DELETE /product/)</b>
 
 ```js
 const response = await fetch(`/product/${productId}`, {

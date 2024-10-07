@@ -19,14 +19,4 @@ input{
 }
 
 
-.cart-box {
-	display: flex;
-	border: black 1px solid;
-	background-color: white;
-	padding: 2em;
-	display: flex;
-	flex-direction: column;
-	position: fixed;
-	top: 50%;
-	left: 42%;
-  }
+
